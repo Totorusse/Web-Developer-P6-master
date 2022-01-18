@@ -1,6 +1,6 @@
-const Thing = require("../models/sauce");
+const Thing = require("../models/Sauce");
 const fs = require("fs");
-
+/*
 exports.createThing = (req, res, next) => {
   const thingObject = JSON.parse(req.body.thing);
   delete thingObject._id;
@@ -64,3 +64,4 @@ exports.getAllStuff = (req, res, next) => {
       });
     });
 };
+*/
