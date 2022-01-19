@@ -1,25 +1,26 @@
-const Thing = require("../models/Sauces");
+const Sauce = require("../models/Sauces");
 const fs = require("fs");
 
-exports.createThing = (req, res, next) => {
-  const thingObject = JSON.parse(req.body.thing);
-  delete thingObject._id;
-  const thing = new Sauces({
-    ...thingObject,
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+exports.newSauce = (req, res, next) => {
+  const sauceObject = JSON.parse(req.body.sauce);
+  delete sauceObject._id;
+  console.log(sauceObject);
+  const sauce = new Sauce({
+    ...sauceObject,
+    // imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
   });
-  thing
+  sauce
     .save()
     .then(() => res.status(201).json({ message: "Objet enregistré !" }))
     .catch((error) => res.status(400).json({ error }));
 };
 
 exports.getOneThing = (req, res, next) => {
-  Thing.findOne({
+  Sauce.findOne({
     _id: req.params.id,
   })
-    .then((thing) => {
-      res.status(200).json(thing);
+    .then((sauces) => {
+      res.status(200).json(sauce);
     })
     .catch((error) => {
       res.status(404).json({
@@ -54,9 +55,9 @@ exports.deleteThing = (req, res, next) => {
 };
 
 exports.getAllStuff = (req, res, next) => {
-  Thing.find()
-    .then((things) => {
-      res.status(200).json(things);
+  Sauce.find()
+    .then((sauces) => {
+      res.status(200).json(sauces);
     })
     .catch((error) => {
       res.status(400).json({
