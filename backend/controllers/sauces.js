@@ -4,10 +4,9 @@ const fs = require("fs");
 exports.newSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
-  console.log(sauceObject);
   const sauce = new Sauce({
     ...sauceObject,
-    // imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
   });
   sauce
     .save()
@@ -15,11 +14,11 @@ exports.newSauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-exports.getOneThing = (req, res, next) => {
+exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({
-    _id: req.params.id,
+    userId: req.params.id,
   })
-    .then((sauces) => {
+    .then((sauce) => {
       res.status(200).json(sauce);
     })
     .catch((error) => {
@@ -29,7 +28,7 @@ exports.getOneThing = (req, res, next) => {
     });
 };
 
-exports.modifyThing = (req, res, next) => {
+exports.modifySauce = (req, res, next) => {
   const thingObject = req.file
     ? {
         ...JSON.parse(req.body.thing),
@@ -41,7 +40,7 @@ exports.modifyThing = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-exports.deleteThing = (req, res, next) => {
+exports.deleteSauce = (req, res, next) => {
   Thing.findOne({ _id: req.params.id })
     .then((thing) => {
       const filename = thing.imageUrl.split("/images/")[1];
@@ -54,10 +53,10 @@ exports.deleteThing = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-exports.getAllStuff = (req, res, next) => {
+exports.getAllSauces = (req, res, next) => {
   Sauce.find()
-    .then((sauces) => {
-      res.status(200).json(sauces);
+    .then((Sauce) => {
+      res.status(200).json(Sauce);
     })
     .catch((error) => {
       res.status(400).json({
@@ -65,3 +64,5 @@ exports.getAllStuff = (req, res, next) => {
       });
     });
 };
+
+console.log(Sauce);
