@@ -10,8 +10,8 @@ const ModelsSauce = mongoose.Schema({
   imageUrl: { type: String },
   likes: { type: Number },
   dislikes: { type: Number },
-  usersLiked: { type: String },
-  usersdisLiked: { type: String },
+  usersLiked: { type: ["String <userId>"] },
+  usersdisLiked: { type: ["String <userId>"] },
 });
 
 module.exports = mongoose.model("ModelsSauce", ModelsSauce);

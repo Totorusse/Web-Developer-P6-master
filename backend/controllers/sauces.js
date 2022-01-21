@@ -3,10 +3,17 @@ const fs = require("fs");
 
 exports.newSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
-  delete sauceObject.userId;
+  delete sauceObject._id;
+  let noteLike = 0;
+  let noteDislike = 0;
+
   const sauce = new Sauce({
     ...sauceObject,
     imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    likes: `${noteLike}`,
+    dislikes: `${noteDislike}`,
+    usersLiked: [],
+    usersDisliked: [],
   });
   sauce
     .save()
@@ -16,7 +23,7 @@ exports.newSauce = (req, res, next) => {
 
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({
-    id: req.params.userId,
+    _id: req.params.id,
   })
     .then((sauce) => {
       res.status(200).json(sauce);
@@ -35,13 +42,13 @@ exports.modifySauce = (req, res, next) => {
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
       }
     : { ...req.body };
-  Sauce.updateOne({ id: req.params.id }, { ...sauceObject, id: req.params.id })
+  Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
     .then(() => res.status(200).json({ message: "Objet modifié !" }))
     .catch((error) => res.status(400).json({ error }));
 };
 
 exports.deleteSauce = (req, res, next) => {
-  Sauce.findOne({ id: req.params.id })
+  Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       const filename = sauce.imageUrl.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
@@ -55,8 +62,8 @@ exports.deleteSauce = (req, res, next) => {
 
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
-    .then((Sauce) => {
-      res.status(200).json(Sauce);
+    .then((Sauces) => {
+      res.status(200).json(Sauces);
     })
     .catch((error) => {
       res.status(400).json({
@@ -65,4 +72,13 @@ exports.getAllSauces = (req, res, next) => {
     });
 };
 
-console.log(Sauce);
+exports.like = (req, res, next) => {
+  const sauceObject = JSON.parse(req.body.sauce);
+  const like = sauceObject;
+  console.log(like);
+  //delete sauceObject._id;
+
+  Sauce.find()
+    .then(() => res.status(201).json({ message: "Objet enregistré !" }))
+    .catch((error) => res.status(400).json({ error }));
+};
