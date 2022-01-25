@@ -51,8 +51,6 @@ exports.like = (req, res, next) => {
   const requete = req.body;
   const IdLike = req.body.userId;
   let liked = req.body.like;
-  console.log(IdLike);
-  console.log(liked);
 
   switch (liked) {
     case -1:
