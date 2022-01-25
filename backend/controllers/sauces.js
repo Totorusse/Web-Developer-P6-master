@@ -65,25 +65,26 @@ exports.like = (req, res, next) => {
       break;
     case 0:
       Sauce.updateOne(
-        { _id: req.params.id },
+        { _id: req.params.id, usersLiked: IdLike },
         {
-          $cond: {
-            if: { _id: req.params.id },
-            then: { $inc: { likes: 20 } },
-            else: { $inc: { likes: 10 } },
-          },
-          $cond: {
-            if: { usersDisliked: { $eq: IdLike } },
-            then: { $inc: { dislikes: -1 } },
-            else: { $inc: { dislikes: 0 } },
-          },
-
-          $pull: { usersLiked: IdLike, usersDisliked: IdLike },
+          $inc: { likes: -1 },
+          $pull: { usersLiked: IdLike },
           _id: req.params.id,
         }
       )
+        .then(() =>
+          Sauce.updateOne(
+            { _id: req.params.id, usersDisliked: IdLike },
+            {
+              $inc: { dislikes: -1 },
+              $pull: { usersDisliked: IdLike },
+              _id: req.params.id,
+            }
+          )
+        )
         .then(() => res.status(200).json({ message: "Pas d'avis sur cette sauce" }))
         .catch((error) => res.status(400).json({ error }));
+
       break;
     case 1:
       Sauce.updateOne(
