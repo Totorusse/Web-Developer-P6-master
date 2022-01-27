@@ -3,8 +3,3 @@
 /workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
-# Images
-*/images/
-*.png
-*.jpg
-*.jpeg
