@@ -4,4 +4,7 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 # Images
-/images/
+*/images/
+*.png
+*.jpg
+*.jpeg
