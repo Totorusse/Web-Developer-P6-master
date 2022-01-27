@@ -1,1 +1,5 @@
 /node_modules
+/backend/images
+*.png
+*.jpg
+*.jpeg
