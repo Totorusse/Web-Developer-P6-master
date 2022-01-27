@@ -18,6 +18,10 @@ const app = express();
 app.use(express.json());
 
 app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src *; style-src 'self' 'unsafe-inline'; font-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+  );
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
