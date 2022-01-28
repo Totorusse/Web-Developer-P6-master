@@ -1,18 +1,6 @@
 const Sauce = require("../models/Sauces");
 const fs = require("fs");
 
-exports.getAllSauces = (req, res, next) => {
-  Sauce.find()
-    .then((Sauces) => {
-      res.status(200).json(Sauces);
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error,
-      });
-    });
-};
-
 exports.newSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
@@ -31,20 +19,6 @@ exports.newSauce = (req, res, next) => {
     .save()
     .then(() => res.status(201).json({ message: "Objet enregistré !" }))
     .catch((error) => res.status(400).json({ error }));
-};
-
-exports.getOneSauce = (req, res, next) => {
-  Sauce.findOne({
-    _id: req.params.id,
-  })
-    .then((sauce) => {
-      res.status(200).json(sauce);
-    })
-    .catch((error) => {
-      res.status(404).json({
-        error: error,
-      });
-    });
 };
 
 exports.like = (req, res, next) => {
@@ -118,4 +92,31 @@ exports.deleteSauce = (req, res, next) => {
       });
     })
     .catch((error) => res.status(500).json({ error }));
+};
+
+exports.getAllSauces = (req, res, next) => {
+  Sauce.find()
+    .then((ModelsSsauce) => {
+      console.log(ModelsSsauce);
+      res.status(200).json(ModelsSsauce);
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error,
+      });
+    });
+};
+
+exports.getOneSauce = (req, res, next) => {
+  Sauce.findOne({
+    _id: req.params.id,
+  })
+    .then((sauce) => {
+      res.status(200).json(sauce);
+    })
+    .catch((error) => {
+      res.status(404).json({
+        error: error,
+      });
+    });
 };

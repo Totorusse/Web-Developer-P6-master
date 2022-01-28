@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const sauceRoutes = require("./routes/sauces");
 const userRoutes = require("./routes/user");
+const cors = require("cors");
+const dotenv = require("dotenv");
 const path = require("path");
 const mongoose = require("mongoose");
 const mongooseExpressErrorHandler = require("mongoose-express-error-handler");
@@ -15,8 +17,10 @@ mongoose
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
 const app = express();
+dotenv.config();
 
 app.use(express.json());
+app.use(cors());
 app.use(mongooseExpressErrorHandler);
 
 app.use((req, res, next) => {
@@ -33,9 +37,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+
 app.use("/api/sauces", sauceRoutes);
 app.use("/api/auth", userRoutes);
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;
