@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const sauceRoutes = require("./routes/sauces");
+const sauceRoutes = require("./routes/sauce");
 const userRoutes = require("./routes/user");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -24,10 +24,6 @@ app.use(cors());
 app.use(mongooseExpressErrorHandler);
 
 app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src *; style-src 'self' 'unsafe-inline'; font-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'"
-  );
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
